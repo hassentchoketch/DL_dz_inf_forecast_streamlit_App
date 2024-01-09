@@ -21,9 +21,10 @@ page = st.sidebar.radio("Select a page", pages)
 
 @st.cache_data()
 def get_data(start_year,end_year): 
-    # Import Da
+    # Import Data
+    df = pd.read_csv('DZ_Consumption_price_index.csv')
     # df = pd.read_csv('/Users/bengherbia/Library/CloudStorage/OneDrive-Personal/Bureau/My_github/Deep-Learning-vs-ARMA-in-forcasting-inflation-/Deep-Learning-vs-ARMA-in-forcasting-inflation--1/streamlit_App/DZ_Consumption_price_index.csv')
-    df = pd.read_csv('https://github.com/hassentchoketch/Deep-Learning-vs-ARMA-in-forcasting-inflation-/blob/master/streamlit_App/DZ_Consumption_price_index.csv')
+    # df = pd.read_csv('https://github.com/hassentchoketch/Deep-Learning-vs-ARMA-in-forcasting-inflation-/blob/master/streamlit_App/DZ_Consumption_price_index.csv')
     df['date'] = pd.to_datetime(df['date'])
     # Set 'date_column' as the index
     df.set_index('date', inplace=True)
