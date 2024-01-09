@@ -1,0 +1,7 @@
+keras==2.15.0
+numpy==1.26.3
+pandas==2.1.4
+plotly==5.18.0
+statsmodels==0.14.1
+streamlit==1.29.0
+tensorflow==2.15.0.post1
