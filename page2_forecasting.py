@@ -75,7 +75,7 @@ def show_forecasts(df):
     model_ = st.sidebar.selectbox(label="Select Model", options=models, index=0)
     
     # model = models_loader(f'/Users/bengherbia/Library/CloudStorage/OneDrive-Personal/Bureau/My_github/Deep-Learning-vs-ARMA-in-forcasting-inflation-/Deep-Learning-vs-ARMA-in-forcasting-inflation--1/streamlit_App/models/{model_}_model.h5') 
-    model = models_loader(f'https://github.com/hassentchoketch/Deep-Learning-vs-ARMA-in-forcasting-inflation-/tree/master/streamlit_App/models/{model_}_model.h5') 
+    # model = models_loader(f'https://github.com/hassentchoketch/Deep-Learning-vs-ARMA-in-forcasting-inflation-/tree/master/streamlit_App/models/{model_}_model.h5') 
     model = models_loader(f'models/{model_}_model.h5')
 
     if forecast_type == 'Within_Sample_Forecast':
