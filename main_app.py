@@ -75,8 +75,8 @@ if page == 'Forecast':
     if forecast_type == 'Future_Forecast':
         years = list(range(2000,2023,1))
         start_year = st.sidebar.selectbox(label="Select Start Year", options=years,index=15)
-        end_year = st.sidebar.selectbox(label ="Select End Year", options=years,index=22)
-        df = get_data(start_year-1,end_year)
+        # end_year = st.sidebar.selectbox(label ="Select End Year", options=years,index=22)
+        df = get_data(start_year-1,years[-1])
         # Calculate Inflation Rate
         df["Inflation Rate"] = round((df["CPI"] / df["CPI"].shift(12) - 1) * 100,2)
         Loss_metrice_=''
