@@ -1,7 +1,6 @@
 import os
 import streamlit as st
 import pandas as pd
-import streamlit as st
 import page1_overview
 import page2_forecasting
 
@@ -15,7 +14,6 @@ st.set_page_config(
 st.markdown("#")
 st.header("Algeria's CPI inflation 2000-2022")
 pages = ["Overview", "Forecast"]
-    
 # Display the selected page
 page = st.sidebar.radio("Select a page", pages)
 
@@ -33,24 +31,56 @@ def get_data(start_year,end_year):
 
     return df
 
-# Code for selecting periods
-years = list(range(2000,2023,1))
-start_year = st.sidebar.selectbox(label="Select Start Year", options=years,index=0)
-end_year = st.sidebar.selectbox(label ="Select End Year", options=years,index=22)
-
-
-# Read and Select Data for year
-df = get_data(start_year-1,end_year)
-
-# Calculate Inflation Rate
-df["Inflation Rate"] = round((df["CPI"] / df["CPI"].shift(12) - 1) * 100,2)
-
-# Calculate rolling mean and standard deviation
-window_size = 12  # Adjust the window size as needed
-df['Rolling_Mean'] = df['Inflation Rate'].rolling(window=window_size).mean()
-df['Rolling_Std'] = df['Inflation Rate'].rolling(window=window_size).std()
-
 if page == "Overview":
-   page1_overview.show_overview(df)
+    years = list(range(2000,2023,1))
+    start_year = st.sidebar.selectbox(label="Select Start Year", options=years,index=0)
+    end_year = st.sidebar.selectbox(label ="Select End Year", options=years,index=22)
+    df = get_data(start_year-1,end_year)
+    # Calculate Inflation Rate
+    df["Inflation Rate"] = round((df["CPI"] / df["CPI"].shift(12) - 1) * 100,2)
+    # Calculate rolling mean and standard deviation
+    window_size = 12  # Adjust the window size as needed
+    df['Rolling_Mean'] = df['Inflation Rate'].rolling(window=window_size).mean()
+    df['Rolling_Std'] = df['Inflation Rate'].rolling(window=window_size).std()
+    page1_overview.show_overview(df)
 if page == 'Forecast':
-  page2_forecasting.show_forecasts(df)
+    st.markdown("##")
+    st.subheader("Forecast using Deep Neural Network Methods")
+    types = ['Within_Sample_Forecast','Out_of_Sample_Forecast','Future_Forecast']
+    forecast_type = st.sidebar.selectbox(label="Forecast Type", options=types, index=0)
+    models = ['MPL', 'NN', 'simpl_RNN', 'LSTM', 'BI_LSTM', 'CNN']
+    model_ = st.sidebar.selectbox(label="Models", options=models, index=0)
+
+    if forecast_type == 'Within_Sample_Forecast':
+        years = list(range(2000,2021,1))
+        start_year = st.sidebar.selectbox(label="Select Start Year", options=years,index=0)
+        end_year = st.sidebar.selectbox(label ="Select End Year", options=years,index=20)
+        df = get_data(start_year-1,end_year)
+        # Calculate Inflation Rate
+        df["Inflation Rate"] = round((df["CPI"] / df["CPI"].shift(12) - 1) * 100,2)
+
+        Loss_metrice = ['mae','mse','rmse']
+        Loss_metrice_ = st.sidebar.selectbox(label="Loss Metrices", options=Loss_metrice, index=0)
+        
+    if forecast_type == 'Out_of_Sample_Forecast':
+        years = list(range(2020,2023,1))
+        start_year = st.sidebar.selectbox(label="Select Start Year", options=years,index=0)
+        end_year = st.sidebar.selectbox(label ="Select End Year", options=years,index=1)
+        df = get_data(start_year-1,end_year)
+        # Calculate Inflation Rate
+        df["Inflation Rate"] = round((df["CPI"] / df["CPI"].shift(12) - 1) * 100,2)
+        Loss_metrice = ['mae','mse','rmse']
+        Loss_metrice_ = st.sidebar.selectbox(label="Loss Metrices", options=Loss_metrice, index=0)
+
+    if forecast_type == 'Future_Forecast':
+        years = list(range(2000,2023,1))
+        start_year = st.sidebar.selectbox(label="Select Start Year", options=years,index=15)
+        end_year = st.sidebar.selectbox(label ="Select End Year", options=years,index=22)
+        df = get_data(start_year-1,end_year)
+        # Calculate Inflation Rate
+        df["Inflation Rate"] = round((df["CPI"] / df["CPI"].shift(12) - 1) * 100,2)
+        Loss_metrice_=''
+
+
+    page2_forecasting.show_forecasts(df,model_,forecast_type,Loss_metrice_)
+
